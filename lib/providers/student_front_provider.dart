@@ -32,7 +32,6 @@ class StudentFrontNotifier
           'Authorization': 'Bearer $token',
         },
       );
-      print('LLAMA A LA API FETCH STUDENT FRONTS');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List;
@@ -71,7 +70,6 @@ class StudentFrontNotifier
           'Authorization': 'Bearer $token',
         },
       );
-      print('LLAMA A LA API FETCH STUDENT FRONTS');
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List;

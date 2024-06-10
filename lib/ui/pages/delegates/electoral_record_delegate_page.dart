@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ElectoralRecordDelegatePage extends StatelessWidget {
-  const ElectoralRecordDelegatePage({Key? key}) : super(key: key);
+  const ElectoralRecordDelegatePage({super.key});
 
   @override
   Widget build(BuildContext context) {

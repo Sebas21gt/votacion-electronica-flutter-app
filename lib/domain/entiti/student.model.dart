@@ -86,23 +86,3 @@ class StudentModel {
         // 'signature': signature.toJson(),
       };
 }
-
-// class Signature {
-//   Signature({
-//     required this.type,
-//     required this.data,
-//   });
-
-//   factory Signature.fromJson(Map<String, dynamic> json) => Signature(
-//         type: json['type'] as String,
-//         data: List<int>.from((json['data'] as Iterable<dynamic>).map((x) => x)),
-//       );
-
-//   final String type;
-//   final List<int> data;
-
-//   Map<String, dynamic> toJson() => {
-//         'type': type,
-//         'data': List<dynamic>.from(data.map((x) => x)),
-//       };
-// }

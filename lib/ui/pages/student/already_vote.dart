@@ -22,7 +22,7 @@ class AlreadyVotePage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Usted ya voto',
+              'Voto exitoso',
               style: TextStyle(
                 fontSize: 24,
                 color: Colors.red,

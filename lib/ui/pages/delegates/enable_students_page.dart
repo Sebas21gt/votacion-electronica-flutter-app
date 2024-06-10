@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:app_vote/providers/enable_student_provider.dart';
+import 'package:app_vote/ui/main/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -43,7 +44,6 @@ class _EnableStudentsDelegatePageState
 
   @override
   Widget build(BuildContext context) {
-    final userId = ref.watch(enableStudentProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -59,12 +59,11 @@ class _EnableStudentsDelegatePageState
             ),
           ),
           const Expanded(
-            flex: 1,
             child: Center(
               child: Text(
                 'Escanea el código QR para habilitar al estudiante',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: Colors.blue),
+                style: TextStyle(fontSize: 18, color: textColor),
               ),
             ),
           ),

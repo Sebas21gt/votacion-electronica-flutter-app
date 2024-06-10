@@ -1,3 +1,7 @@
+// ignore_for_file: unnecessary_null_comparison, library_private_types_in_public_api
+
+import 'dart:convert';
+
 import 'package:app_vote/providers/student_front_provider.dart';
 import 'package:app_vote/ui/main/styles.dart';
 import 'package:flutter/material.dart';
@@ -34,17 +38,19 @@ class _StudentFrontInfoPageState extends ConsumerState<StudentFrontInfoPage> {
           itemBuilder: (context, index) {
             final front = fronts[index];
             return Card(
+              color: secondary,
               margin: const EdgeInsets.symmetric(vertical: 8.0),
               child: ListTile(
-                leading: Image.asset(
-                  'assets/icons/user_avatar.png',
-                  width: 50,
-                  height: 50,
+                leading: CircleAvatar(
+                  radius: 30.0,
+                  backgroundImage: Image.memory(
+                    base64Decode(front.logo),
+                    fit: BoxFit.cover,
+                  ).image,
+                  onBackgroundImageError: (_, __) {
+                    print('Error loading image for ${front.name}');
+                  },
                 ),
-                // Image.network(front.logo, width: 50, height: 50,
-                //     errorBuilder: (context, error, stackTrace) {
-                // return const Icon(Icons.error, color: Colors.red, size: 50);
-                // }),
                 title: Text(
                   front.name,
                   style: const TextStyle(
@@ -57,7 +63,6 @@ class _StudentFrontInfoPageState extends ConsumerState<StudentFrontInfoPage> {
                 onTap: () {
                   print('Tapped on ${front.name}');
                   print('Tapped on ${front.id}');
-                  // Implementa la lógica para el tap en el frente estudiantil
                 },
               ),
             );

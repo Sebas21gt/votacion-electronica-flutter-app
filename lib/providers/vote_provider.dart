@@ -33,6 +33,7 @@ class VoteNotifier {
       final signatureBytes = await signatureController.toPngBytes();
       final signatureBase64 = base64Encode(signatureBytes!);
 
+
       final response = await http.post(
         Uri.parse('${GlobalConfig.baseUrl}/votes/create'),
         headers: {
@@ -44,6 +45,7 @@ class VoteNotifier {
           'signature': signatureBase64,
         }),
       );
+      print('response: ${response.body}');
 
       if (response.statusCode == 201) {
         Navigator.of(context).pop();

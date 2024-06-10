@@ -1,12 +1,22 @@
-import 'package:app_vote/domain/entiti/student.model.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
 
-class StudentDataEnablePage extends StatelessWidget {
-  const StudentDataEnablePage({super.key, required this.student});
+import 'package:app_vote/domain/entiti/student.model.dart';
+import 'package:app_vote/providers/student_provider.dart';
+import 'package:app_vote/ui/main/routes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
+
+class StudentDataEnablePage extends ConsumerWidget {
+  const StudentDataEnablePage({
+    required this.student,
+    super.key,
+  });
   final StudentModel student;
+  // final String userId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final careers = student.careers.join(', ');
 
     return Scaffold(
@@ -55,21 +65,22 @@ class StudentDataEnablePage extends StatelessWidget {
                   Row(
                     children: [
                       Text('Estado: ', style: _infoStyle),
-                      student.isHabilitated
-                          ? const Chip(
-                              label: Text(
-                                'Habilitado',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              backgroundColor: Colors.green,
-                            )
-                          : const Chip(
-                              label: Text(
-                                'No Habilitado',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              backgroundColor: Colors.red,
-                            ),
+                      if (student.isHabilitated)
+                        const Chip(
+                          label: Text(
+                            'Habilitado',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.green,
+                        )
+                      else
+                        const Chip(
+                          label: Text(
+                            'No Habilitado',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: Colors.red,
+                        ),
                     ],
                   ),
                 ],
@@ -90,8 +101,18 @@ class StudentDataEnablePage extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Implementar la lógica de habilitación del estudiante
+                  onPressed: () async {
+                    print('Habilitar estudiante ${student.userId}');
+                    await ref
+                        .read(studentProvider.notifier)
+                        .enableStudent(student.userId);
+                    Routemaster.of(context).push(RoutePaths.delegateMenu);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Estudiante habilitado correctamente'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.check_circle),
                   label: const Text('HABILITAR'),

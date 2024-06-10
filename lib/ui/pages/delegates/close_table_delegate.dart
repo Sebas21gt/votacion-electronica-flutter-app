@@ -1,25 +1,22 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:app_vote/domain/entiti/delegate.model.dart';
 import 'package:app_vote/domain/entiti/polling_table.model.dart';
 import 'package:app_vote/providers/auth_provider.dart';
 import 'package:app_vote/providers/delegate_provider.dart';
 import 'package:app_vote/ui/main/styles.dart';
-import 'package:app_vote/ui/widgets/atoms/signature_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-class VotingTableDelegatePage extends ConsumerStatefulWidget {
-  const VotingTableDelegatePage({super.key});
+class CloseTableDelegatePage extends ConsumerStatefulWidget {
+  const CloseTableDelegatePage({super.key});
 
   @override
-  ConsumerState<VotingTableDelegatePage> createState() =>
-      _VotingTableDelegatePageState();
+  ConsumerState<CloseTableDelegatePage> createState() =>
+      _CloseTableDelegatePageState();
 }
 
-class _VotingTableDelegatePageState
-    extends ConsumerState<VotingTableDelegatePage> {
+class _CloseTableDelegatePageState
+    extends ConsumerState<CloseTableDelegatePage> {
   @override
   void initState() {
     super.initState();
@@ -49,14 +46,6 @@ class _VotingTableDelegatePageState
               data: (pollingTable) => VotingTableContent(
                 votingTable: pollingTable!,
                 delegate: delegate,
-                onConfirmSignature: (signature) async {
-                  final signatureBase64 = base64Encode(signature);
-                  await ref.read(delegateProvider.notifier).closePollingTable(
-                        pollingTable.id,
-                        signatureBase64,
-                        context,
-                      );
-                },
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stack) => Center(child: Text('Error: $error')),
@@ -76,13 +65,11 @@ class VotingTableContent extends StatelessWidget {
   const VotingTableContent({
     required this.votingTable,
     required this.delegate,
-    required this.onConfirmSignature,
     super.key,
   });
 
   final PollingTableModel votingTable;
   final DelegateModel delegate;
-  final void Function(Uint8List) onConfirmSignature;
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +106,32 @@ class VotingTableContent extends StatelessWidget {
             'Cantidad de estudiantes que votaron: ${votingTable.totalVotes}',
             style: _infoStyle,
           ),
-          const SizedBox(height: 20),
-          SignatureForm(
-            title: 'Firma del Delegado',
-            subtitle:
-                'La firma se usará para cerrar y validar la mesa de sufragio',
-            onConfirm: onConfirmSignature,
+          const SizedBox(height: 100),
+          const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.how_to_vote,
+                size: 100,
+                color: Colors.red,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Mesa de Sufragio Cerrada',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Gracias por participar en las elecciones. Tu firma ha sido registrado.',
+                style: TextStyle(fontSize: 16, color: textColor),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ],
       ),

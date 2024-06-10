@@ -1,4 +1,4 @@
-// ignore_for_file: inference_failure_on_function_invocation, use_build_context_synchronously
+// ignore_for_file: inference_failure_on_function_invocation, use_build_context_synchronously, unused_local_variable
 
 import 'dart:convert';
 
@@ -60,13 +60,12 @@ void showSignatureDialog(BuildContext context, String frontId) {
             final container = ProviderScope.containerOf(context);
             final signatureBytes = await controller.toPngBytes();
             final signatureBase64 = base64Encode(signatureBytes!);
-            print('Firma: ${signatureBytes}');
-            print('Firma en Base64: ${signatureBase64}');
-            // await container.read(voteProvider).submitVote(
-            //       voteFrontId: frontId,
-            //       signatureController: controller,
-            //       context: context,
-            //     );
+
+            await container.read(voteProvider).submitVote(
+                  voteFrontId: frontId,
+                  signatureController: controller,
+                  context: context,
+                );
           },
           child: const Text('ACEPTAR'),
         ),

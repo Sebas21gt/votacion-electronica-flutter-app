@@ -5,6 +5,9 @@ import 'dart:convert';
 import 'package:app_vote/domain/entiti/student.model.dart';
 import 'package:app_vote/middleware/guarded_page.dart';
 import 'package:app_vote/ui/main/global.dart';
+import 'package:app_vote/ui/pages/committee/close_electoral_record.dart';
+import 'package:app_vote/ui/pages/committee/menu_committee_page.dart';
+import 'package:app_vote/ui/pages/delegates/close_table_delegate.dart';
 import 'package:app_vote/ui/pages/delegates/electoral_record_delegate_page.dart';
 import 'package:app_vote/ui/pages/delegates/enable_students_page.dart';
 import 'package:app_vote/ui/pages/delegates/menu_delegate_page.dart';
@@ -43,6 +46,11 @@ class RoutePaths {
   static const String studentDataEnable = '/delegate/student-data-enable';
   static const String electoralRecord = '/delegate/electoral-record';
   static const String votingTable = '/delegate/voting-table';
+  static const String closingTable = '/delegate/closing-table';
+
+  // Committee routes
+  static const String committeeMenu = '/committee';
+  static const String committeeElectoralRecord = '/committee/electoral-record';
 }
 
 final Map<String, Page Function(RouteData)> commonRoutes = {
@@ -117,10 +125,14 @@ final Map<String, Page Function(RouteData)> delegateRoutes = {
         ),
       ),
   RoutePaths.studentDataEnable: (routeData) {
+    print(routeData.queryParameters);
     final studentJson = routeData.queryParameters['student'];
+    final userId = routeData.queryParameters['userId'];
+    print('userId: $userId');
     if (studentJson != null) {
       final student = StudentModel.fromJson(
-          jsonDecode(studentJson) as Map<String, dynamic>);
+        jsonDecode(studentJson) as Map<String, dynamic>,
+      );
       return MaterialPage(
         child: GuardedPage(
           requiredRole: GlobalConfig.delegateRoleId,
@@ -145,6 +157,27 @@ final Map<String, Page Function(RouteData)> delegateRoutes = {
           child: VotingTableDelegatePage(),
         ),
       ),
+  RoutePaths.closingTable: (route) => const MaterialPage(
+        child: GuardedPage(
+          requiredRole: GlobalConfig.delegateRoleId,
+          child: CloseTableDelegatePage(),
+        ),
+      ),
+};
+
+final Map<String, Page Function(RouteData)> committeeRoutes = {
+  RoutePaths.committeeMenu: (route) => const MaterialPage(
+        child: GuardedPage(
+          requiredRole: GlobalConfig.committeeRoleId,
+          child: MenuCommittePage(),
+        ),
+      ),
+  RoutePaths.committeeElectoralRecord: (route) => const MaterialPage(
+        child: GuardedPage(
+          requiredRole: GlobalConfig.committeeRoleId,
+          child: ElectoralRecordPage(),
+        ),
+      ),
 };
 
 final RouteMap authRoutes = RouteMap(
@@ -160,6 +193,12 @@ final RouteMap authRoutes = RouteMap(
           child: GuardedPage(
             requiredRole: GlobalConfig.delegateRoleId,
             child: MenuDelegatePage(),
+          ),
+        ),
+    RoutePaths.committeeMenu: (route) => const MaterialPage(
+          child: GuardedPage(
+            requiredRole: GlobalConfig.committeeRoleId,
+            child: MenuCommittePage(),
           ),
         ),
   },
@@ -178,6 +217,13 @@ RouteMap authenticatedRoutes(String role) {
       routes: {
         ...commonRoutes,
         ...delegateRoutes,
+      },
+    );
+  } else if (role == GlobalConfig.committeeRoleId) {
+    return RouteMap(
+      routes: {
+        ...commonRoutes,
+        ...committeeRoutes,
       },
     );
   } else {

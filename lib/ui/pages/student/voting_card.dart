@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:app_vote/providers/student_provider.dart';
 import 'package:flutter/material.dart';

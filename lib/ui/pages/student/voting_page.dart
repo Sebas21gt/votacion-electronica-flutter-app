@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:convert';
+
 import 'package:app_vote/domain/entiti/students_front.model.dart';
 import 'package:app_vote/providers/student_front_provider.dart';
 import 'package:app_vote/ui/dialogs/confirm_vote_dialog.dart';
@@ -103,8 +105,16 @@ class StudentFrontCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Image.network(front.logo, height: 80),
-          Image.asset('assets/icons/user_avatar.png', height: 45),
+          CircleAvatar(
+            radius: 25,
+            backgroundImage: Image.memory(
+              base64Decode(front.logo),
+              fit: BoxFit.cover,
+            ).image,
+            onBackgroundImageError: (_, __) {
+              print('Error loading image for ${front.name}');
+            },
+          ),
           const SizedBox(height: 8),
           Text(
             front.name,

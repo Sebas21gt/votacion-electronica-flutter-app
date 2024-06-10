@@ -49,8 +49,6 @@ class StudentNotifier extends StateNotifier<AsyncValue<StudentModel?>> {
         },
       );
 
-      print('LLAMA A LA API FETCH STUDENT');
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         state = AsyncValue.data(
@@ -59,6 +57,39 @@ class StudentNotifier extends StateNotifier<AsyncValue<StudentModel?>> {
       } else {
         state =
             AsyncValue.error('Failed to load student data', StackTrace.current);
+      }
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+
+  Future<void> enableStudent(String studentId) async {
+    final authState = ref.read(authProvider);
+    final token = authState['token'];
+    if (token == null) {
+      state = AsyncValue.error('Token is missing', StackTrace.current);
+      return;
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse('${GlobalConfig.baseUrl}/students/enable-student/$studentId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        print('Student enabled');
+        // await fetchStudent(studentId);
+      } else {
+        state = AsyncValue.error(
+          'Failed to enable student',
+          StackTrace.current,
+        );
       }
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);

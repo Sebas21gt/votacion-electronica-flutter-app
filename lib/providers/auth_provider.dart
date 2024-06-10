@@ -22,16 +22,14 @@ class AuthNotifier extends StateNotifier<Map<String, String?>> {
     BuildContext context,
   ) async {
     const url = '${GlobalConfig.baseUrl}/auth/login';
-    print('Login request to: $url');
     try {
-      print('Username: $username, Password: $password');
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'username': username, 'password': password}),
       );
 
-      print('Entra aquiii');
+      print('Entra a Login');
 
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
@@ -41,11 +39,15 @@ class AuthNotifier extends StateNotifier<Map<String, String?>> {
         await _validateRoleAndNavigate(token, context);
       } else {
         _showError(
-            context, 'Credenciales incorrectas. Por favor intente de nuevo.');
+          context,
+          'Credenciales incorrectas. Por favor intente de nuevo.',
+        );
       }
     } catch (e) {
       _showError(
-          context, 'Error al iniciar sesión. Por favor intente de nuevo.');
+        context,
+        'Error al iniciar sesión. Por favor intente de nuevo.',
+      );
     }
   }
 
@@ -74,6 +76,11 @@ class AuthNotifier extends StateNotifier<Map<String, String?>> {
       print('Token: $token');
       print('Delegate role selected');
       Routemaster.of(context).replace(RoutePaths.delegateMenu);
+    } else if (roles.contains(GlobalConfig.committeeRoleId)) {
+      state = {'token': token, 'selectedRole': GlobalConfig.committeeRoleId};
+      print('Token: $token');
+      print('Committe role selected');
+      Routemaster.of(context).replace(RoutePaths.committeeMenu);
     } else {
       Routemaster.of(context).replace(RoutePaths.login);
     }

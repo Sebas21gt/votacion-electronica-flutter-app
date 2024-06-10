@@ -23,7 +23,7 @@ class StudentFrontModel {
         status: json['status'] as int,
         name: json['name'] as String,
         acronym: json['acronym'] as String,
-        logo: json['logo'] as dynamic,
+        logo: json['logo'] as String,
         isHabilitated: json['isHabilitated'] as bool,
       );
 
@@ -31,7 +31,7 @@ class StudentFrontModel {
   final int status;
   final String name;
   final String acronym;
-  final dynamic logo;
+  final String logo;
   final bool isHabilitated;
 
   Map<String, dynamic> toJson() => {

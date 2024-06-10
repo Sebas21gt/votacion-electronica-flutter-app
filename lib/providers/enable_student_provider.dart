@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_void_async
 
 import 'dart:convert';
 
@@ -24,13 +24,12 @@ class EnableStudentNotifier extends StateNotifier<String?> {
       final decodedToken = JwtDecoder.decode(qrCode);
       final userId = decodedToken['userId'];
       state = userId as String;
-      print('Decoded userId student: $userId');
 
       await ref.read(studentProvider.notifier).fetchStudent(userId);
 
-      // Obtener los datos del estudiante
       final studentState = ref.read(studentProvider);
       final student = studentState.value;
+      student?.userId = userId;
       Routemaster.of(context).push(
         RoutePaths.studentDataEnable,
         queryParameters: {'student': jsonEncode(student)},
