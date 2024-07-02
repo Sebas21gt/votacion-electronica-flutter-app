@@ -7,14 +7,14 @@ class MenuButton extends ConsumerWidget {
   const MenuButton({
     required this.title,
     required this.imagePath,
-    required this.route,
+    this.route,
     this.onPressedAction,
     super.key,
   });
 
   final String title;
   final String imagePath;
-  final String route;
+  final String? route;
   final VoidCallback? onPressedAction;
 
   @override
@@ -31,7 +31,7 @@ class MenuButton extends ConsumerWidget {
         if (onPressedAction != null) {
           onPressedAction!();
         } else{
-          Routemaster.of(context).push(route);
+          Routemaster.of(context).push(route!);
         }
         // Routemaster.of(context).push(route);
       },

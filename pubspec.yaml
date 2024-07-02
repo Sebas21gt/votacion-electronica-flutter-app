@@ -23,6 +23,7 @@ dependencies:
   signature: ^5.5.0
   flutter_windowmanager: ^0.2.0
   qr_code_scanner: ^1.0.1
+  no_screenshot: ^0.0.1+6
 
 dev_dependencies:
   flutter_test:

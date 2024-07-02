@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 final committeeDrawerItems = [
   DrawerItem(
     icon: Icons.how_to_vote,
-    title: 'Abrir Votaciones',
+    title: 'Iniciar Votación',
     route: RoutePaths.studentsFrontInfo,
   ),
   DrawerItem(
     icon: Icons.signal_cellular_no_sim_outlined,
     title: 'Cerrar Acta Electoral',
-    route: RoutePaths.studentsEnableQrVoting,
+    route: RoutePaths.committeeElectoralRecord,
     // onPressedAction: (context, ref) {
     //   ref.read(studentProvider.notifier).checkStudentStatusAndNavigate(context);
     // },

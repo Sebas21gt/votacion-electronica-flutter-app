@@ -9,6 +9,7 @@ import 'package:app_vote/ui/main/styles.dart';
 import 'package:app_vote/ui/widgets/atoms/button_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_screenshot/no_screenshot.dart';
 
 class VotingPage extends ConsumerStatefulWidget {
   const VotingPage({super.key});
@@ -18,12 +19,21 @@ class VotingPage extends ConsumerStatefulWidget {
 }
 
 class _VotingPageState extends ConsumerState<VotingPage> {
+  final _noScreenshot = NoScreenshot.instance;
+
   @override
   void initState() {
     super.initState();
+    _noScreenshot.screenshotOff();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(studentFrontProvider.notifier).fetchStudentFronts();
     });
+  }
+
+  @override
+  void dispose() {
+    _noScreenshot.screenshotOn();
+    super.dispose();
   }
 
   @override

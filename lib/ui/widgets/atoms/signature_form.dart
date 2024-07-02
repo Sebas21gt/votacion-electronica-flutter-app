@@ -60,6 +60,7 @@ class SignatureForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ButtonCustom(
+              // width: ,
               onPressed: controller.clear,
               text: 'EDITAR',
               outlined: true,

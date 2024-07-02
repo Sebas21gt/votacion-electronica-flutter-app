@@ -3,9 +3,11 @@
 import 'dart:convert';
 
 import 'package:app_vote/providers/student_front_provider.dart';
+import 'package:app_vote/ui/main/routes.dart';
 import 'package:app_vote/ui/main/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class StudentFrontInfoPage extends ConsumerStatefulWidget {
   const StudentFrontInfoPage({super.key});
@@ -61,8 +63,12 @@ class _StudentFrontInfoPageState extends ConsumerState<StudentFrontInfoPage> {
                 ),
                 subtitle: Text(front.acronym),
                 onTap: () {
-                  print('Tapped on ${front.name}');
-                  print('Tapped on ${front.id}');
+                  // print('Tapped on ${front.name}');
+                  // print('Tapped on ${front.id}');
+                  Routemaster.of(context).push(
+                    RoutePaths.studentFrontDetail,
+                    queryParameters: {'frontId': jsonEncode(front.id)},
+                  );
                 },
               ),
             );

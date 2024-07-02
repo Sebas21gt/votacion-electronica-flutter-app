@@ -18,6 +18,7 @@ import 'package:app_vote/ui/pages/student/already_vote.dart';
 import 'package:app_vote/ui/pages/student/menu_student_page.dart';
 import 'package:app_vote/ui/pages/student/nothing_card_voting.dart';
 import 'package:app_vote/ui/pages/student/student_front_info.dart';
+import 'package:app_vote/ui/pages/student/student_front_info_detail.dart';
 import 'package:app_vote/ui/pages/student/student_qr_enable_page.dart';
 import 'package:app_vote/ui/pages/student/voting_card.dart';
 import 'package:app_vote/ui/pages/student/voting_page.dart';
@@ -32,6 +33,7 @@ class RoutePaths {
   // Student routes
   static const String studentMenu = '/student';
   static const String studentsFrontInfo = '/student/students-front-info';
+  static const String studentFrontDetail = '/student/students-front-detail';
   static const String studentsEnableQrVoting =
       '/student/students-enable-qr-voting';
   static const String studentsVoting = '/student/students-voting';
@@ -73,6 +75,21 @@ final Map<String, Page Function(RouteData)> studentRoutes = {
           child: StudentFrontInfoPage(),
         ),
       ),
+  RoutePaths.studentFrontDetail: (routeData) {
+    final frontId = routeData.queryParameters['frontId'];
+    if (frontId != null) {
+      return MaterialPage(
+        child: GuardedPage(
+          requiredRole: GlobalConfig.studentRoleId,
+          child: StudentFrontDetailPage(frontId: frontId),
+        ),
+      );
+    } else {
+      return const MaterialPage(
+        child: Scaffold(body: Center(child: Text('Student data not found'))),
+      );
+    }
+  },
   RoutePaths.studentsVoting: (route) => const MaterialPage(
         child: GuardedPage(
           requiredRole: GlobalConfig.studentRoleId,
